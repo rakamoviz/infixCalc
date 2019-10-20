@@ -21,11 +21,6 @@ function infixToPostfix(tokensInfix) {
   const tokensPostfix = [];
 
   tokensInfix.forEach(token => {
-    if (token === '-') {
-      console.log('>>>>: ', token);
-      console.log({conversionStack, tokensPostfix});
-    }
-
     if (isNaN(token) === false) {
       const previousToken = conversionStack.slice(-1)[0];
 
@@ -48,9 +43,7 @@ function infixToPostfix(tokensInfix) {
       tokensPostfix.push(previousToken);
 
       if (conversionStack.length === 2) {
-        if (token === '-') console.log("HA.03 ", {conversionStack, tokensPostfix})
         tokensPostfix.push(conversionStack.pop());
-        if (token === '-') console.log("HA.03.b ", {conversionStack, tokensPostfix})
       }
 
       const previousOperator = conversionStack.slice(-1)[0]; //peek
@@ -61,24 +54,12 @@ function infixToPostfix(tokensInfix) {
           operatorPrecedence[token] < operatorPrecedence[previousOperator]
         )
       ) {
-        if (token === '-') console.log("HA.01")
         tokensPostfix.push(conversionStack.pop());
-      } else {
-        if (token === '-') console.log("HA.02")
       }
 
       conversionStack.push(token);
     }
-
-    if (token === '-') {
-      console.log({conversionStack, tokensPostfix});
-      console.log('<<<')
-    }
   });
-
-  //if (token === '-') {
-    console.log("====> ", {conversionStack});
-  //}
 
   let remainingToken = conversionStack.pop();
   if (isNaN(remainingToken)) {
@@ -117,8 +98,6 @@ const tokensInfix = infixExpression.split(' ')
 
 const tokensPostfix = infixToPostfix(tokensInfix);
 
-console.log(tokensPostfix)
-
 const reducedPostfix = tokensPostfix.reduce((acc, token) => {
   if (isNaN(token)) {//operator
     const rightOperand = acc.pop();
@@ -147,4 +126,5 @@ if (reducedPostfix.length > 1) {
  throw new Error("Postfix syntax error");
 }
 
-console.log(reducedPostfix[0]);
+const result = reducedPostfix[0];
+console.log({infixExpression, postfixExpression: tokensPostfix.join(' '), result});
