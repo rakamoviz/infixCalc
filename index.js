@@ -92,7 +92,7 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
     const previousToken = conversionStack.slice(-1)[0];
 
     if (previousToken !== undefined && isNaN(previousToken) === false) {
-      postfixTokenSubscriber.error(new Error('zArithmetic syntax error'));
+      postfixTokenSubscriber.error(new Error('Arithmetic syntax error'));
     }
 
     conversionStack.push(token);
@@ -122,9 +122,6 @@ function createPostfixTokenStream(infixTokenStream) {
       }, [])
     ).subscribe(conversionStack => {
       let remainingToken = conversionStack.pop();
-      /*if (isNaN(remainingToken)) {
-        postfixTokenSubscriber.error(new Error('aaaaaArithmetic syntax error:' + remainingToken));
-      }*/
 
       while(remainingToken !== undefined) {
         postfixTokenSubscriber.next(remainingToken);
@@ -216,7 +213,7 @@ function calculate(infixExpression) {
       if (isNaN(token) && OPERATOR_PRECENDENCE[token] !== undefined) {//arithmetic operator
         const rightOperand = reducedPostfix.pop();
         if (rightOperand === undefined) {
-          throw new Error("zzzArithmetic evaluation error " + token);
+          throw new Error("Arithmetic evaluation error " + token);
         }
 
         const leftOperand = reducedPostfix.pop();
