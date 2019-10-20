@@ -105,9 +105,45 @@ describe('Infix Calc', () => {
       });
     });
 
+    //lower follower by higher-precedence
     it('return 7 when input is 1 + 2 * 3', () => {
       return infixCalc.calculatePromise('1 + 2 * 3').then(result => {
         assert.equal(result, '7');
+      });
+    });
+
+    //higher follower by lower-precedence
+    it('return 5 when input is 1 * 2 + 3', () => {
+      return infixCalc.calculatePromise('1 * 2 + 3').then(result => {
+        assert.equal(result, '5');
+      });
+    });
+
+    //two lower-precedences surround one higher
+    it('return 11 when input is 1 + 2 * 3 + 4', () => {
+      return infixCalc.calculatePromise('1 + 2 * 3 + 4').then(result => {
+        assert.equal(result, '11');
+      });
+    });
+
+    //two higher-precedences surround one lower
+    it('return 14 when input is 1 * 2 + 3 * 4', () => {
+      return infixCalc.calculatePromise('1 * 2 + 3 * 4').then(result => {
+        assert.equal(result, '14');
+      });
+    });
+
+    //two higher-precedences followed by one lower
+    it('return 10 when input is 1 * 2 * 3 + 4', () => {
+      return infixCalc.calculatePromise('1 * 2 * 3 + 4').then(result => {
+        assert.equal(result, '10');
+      });
+    });
+
+    //two lower-precedences followed by one higher
+    it('return 15 when input is 1 + 2 + 3 * 4', () => {
+      return infixCalc.calculatePromise('1 + 2 + 3 * 4').then(result => {
+        assert.equal(result, '15');
       });
     });
   });

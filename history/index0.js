@@ -21,6 +21,9 @@ function infixToPostfix(tokensInfix) {
   const tokensPostfix = [];
 
   tokensInfix.forEach(token => {
+    console.log('>>>>: ', token);
+    console.log({conversionStack, tokensPostfix});
+
     if (isNaN(token) === false) {
       const previousToken = conversionStack.slice(-1)[0];
 
@@ -45,14 +48,22 @@ function infixToPostfix(tokensInfix) {
       const previousOperator = conversionStack.slice(-1)[0]; //peek
       if (
         previousOperator !== undefined &&
-        operatorPrecedence[token] === operatorPrecedence[previousOperator]
+        (
+          operatorPrecedence[token] === operatorPrecedence[previousOperator] ||
+          operatorPrecedence[token] < operatorPrecedence[previousOperator]
+        )
       ) {
         tokensPostfix.push(conversionStack.pop());
       }
 
       conversionStack.push(token);
     }
+
+    console.log({conversionStack, tokensPostfix});
+    console.log('<<<')
   });
+
+  console.log("====> ", {conversionStack});
 
   let remainingToken = conversionStack.pop();
   if (isNaN(remainingToken)) {
@@ -82,7 +93,11 @@ const operatorFns = {
   }
 }
 
-const reducedPostfix = infixToPostfix(['1', '+', '2', '*', '3']).reduce((acc, token) => {
+const tokensPostfix = infixToPostfix(['1', '+' , '2', '*', '3', '+', '4']);
+
+console.log(tokensPostfix)
+
+const reducedPostfix = tokensPostfix.reduce((acc, token) => {
   if (isNaN(token)) {//operator
     const rightOperand = acc.pop();
     if (rightOperand === undefined) {

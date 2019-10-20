@@ -1,7 +1,7 @@
 const Rx = require('rxjs');
 const RxOperators = require('rxjs/operators')
 
-const OPERATOR_PRECENDENCE = {
+const OPERATOR_PRECEDENCE = {
   '*': 1,
   '/': 1,
   '+': 0,
@@ -46,7 +46,7 @@ function parseOperand(operand, infixTokenSubscriber) {
 }
 
 function processToken(token, infixTokenSubscriber) {
-  if (OPERATOR_PRECENDENCE[token] === undefined) {
+  if (OPERATOR_PRECEDENCE[token] === undefined) {
     parseOperand(token, infixTokenSubscriber);
   } else {
     infixTokenSubscriber.next(token);
@@ -99,7 +99,7 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
 
     conversionStack.push(token);
   } else {
-    if (OPERATOR_PRECENDENCE[token] === undefined) {
+    if (OPERATOR_PRECEDENCE[token] === undefined) {
       postfixTokenSubscriber.error(new Error(`Unknown operator: ${token}`));
     }
 
@@ -114,7 +114,10 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
     const previousOperator = conversionStack.slice(-1)[0]; //peek
     if (
       previousOperator !== undefined &&
-      OPERATOR_PRECENDENCE[token] === OPERATOR_PRECENDENCE[previousOperator]
+      (
+        OPERATOR_PRECEDENCE[token] === OPERATOR_PRECEDENCE[previousOperator] ||
+        OPERATOR_PRECEDENCE[token] < OPERATOR_PRECEDENCE[previousOperator]
+      )
     ) {
       postfixTokenSubscriber.next(conversionStack.pop());
     }

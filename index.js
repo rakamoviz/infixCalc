@@ -1,7 +1,7 @@
 const Rx = require('rxjs');
 const RxOperators = require('rxjs/operators')
 
-const OPERATOR_PRECENDENCE = {
+const OPERATOR_PRECEDENCE = {
   '*': 1,
   '/': 1,
   '+': 0,
@@ -44,7 +44,7 @@ function parseOperand(operand, infixTokenSubscriber) {
 }
 
 function processToken(token, infixTokenSubscriber) {
-  if (OPERATOR_PRECENDENCE[token] === undefined) {
+  if (OPERATOR_PRECEDENCE[token] === undefined) {
     parseOperand(token, infixTokenSubscriber);
   } else {
     infixTokenSubscriber.next(token);
@@ -90,7 +90,7 @@ function createInfixTokenStream(infixExpression) {
  * [1_2/-3]
  */
 function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
-  if (isNaN(token) === false || OPERATOR_PRECENDENCE[token] === undefined) { //number
+  if (isNaN(token) === false || OPERATOR_PRECEDENCE[token] === undefined) { //number
     const previousToken = conversionStack.slice(-1)[0];
 
     if (previousToken !== undefined && isNaN(previousToken) === false) {
@@ -98,7 +98,7 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
     }
 
     conversionStack.push(token);
-  } else if (OPERATOR_PRECENDENCE[token] !== undefined) { //operator
+  } else if (OPERATOR_PRECEDENCE[token] !== undefined) { //operator
     const previousToken = conversionStack.pop();
 
     postfixTokenSubscriber.next(previousToken);
@@ -106,7 +106,10 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
     const previousOperator = conversionStack.slice(-1)[0]; //peek
     if (
       previousOperator !== undefined &&
-      OPERATOR_PRECENDENCE[token] === OPERATOR_PRECENDENCE[previousOperator]
+      (
+        OPERATOR_PRECEDENCE[token] === OPERATOR_PRECEDENCE[previousOperator] ||
+        OPERATOR_PRECEDENCE[token] < OPERATOR_PRECEDENCE[previousOperator]
+      )
     ) {
       postfixTokenSubscriber.next(conversionStack.pop());
     }
@@ -244,7 +247,7 @@ function formatMixedNumber(integerPart, dividend, divisor) {
 function calculate(infixExpression) {
   return createPostfixTokenStream(createInfixTokenStream(infixExpression)).pipe(
     RxOperators.reduce((reducedPostfix, token) => {
-      if (isNaN(token) && OPERATOR_PRECENDENCE[token] !== undefined) {//arithmetic operator
+      if (isNaN(token) && OPERATOR_PRECEDENCE[token] !== undefined) {//arithmetic operator
         const rightOperand = reducedPostfix.pop();
         if (rightOperand === undefined) {
           throw new Error("Arithmetic evaluation error " + token);
