@@ -111,6 +111,10 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
 
     postfixTokenSubscriber.next(previousToken);
 
+    if (conversionStack.length === 2) {
+      postfixTokenSubscriber.next(token);
+    }
+
     const previousOperator = conversionStack.slice(-1)[0]; //peek
     if (
       previousOperator !== undefined &&

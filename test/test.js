@@ -202,5 +202,61 @@ describe('Infix Calc', () => {
         assert.equal(result, '15');
       });
     });
+
+    //two additions surround one division
+    it('return 4 when input is 1 + 2 - 3 + 4', () => {
+      return infixCalc.calculatePromise('1 + 2 - 3 + 4').then(result => {
+        assert.equal(result, '4');
+      });
+    });
+
+    //combine all operators lo-hi-lo
+    it('return -2_1/4 when input is 2 + 3 / 4 - 5', () => {
+      return infixCalc.calculatePromise('2 + 3 / 4 - 5').then(result => {
+        assert.equal(result, '-2_1/4');
+      });
+    });
+
+    //simple decimal number
+    it('return 2.5 when input 2.5', () => {
+      return infixCalc.calculatePromise('2.5').then(result => {
+        assert.equal(result, '2.5');
+      });
+    });
+
+    //simple negative number
+    it('return -2 when input -2', () => {
+      return infixCalc.calculatePromise('-2').then(result => {
+        assert.equal(result, '-2');
+      });
+    });
+
+    //simple negative decimal number
+    it('return -2.5 when input -2.5', () => {
+      return infixCalc.calculatePromise('-2.5').then(result => {
+        assert.equal(result, '-2.5');
+      });
+    });
+
+    //division of decimal numbers
+    it('return 1/2 when input 2.0 / 4.0', () => {
+      return infixCalc.calculatePromise('2.0 / 4.0').then(result => {
+        assert.equal(result, '1/2');
+      });
+    });
+
+    //division of decimal numbers of different polarity
+    it('return -1/2 when input 2.0 / -4.0', () => {
+      return infixCalc.calculatePromise('2.0 / -4.0').then(result => {
+        assert.equal(result, '-1/2');
+      });
+    });
+
+    //crazy long operation
+    it('return -2_130.70000000000005/132 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15', () => {
+      return infixCalc.calculatePromise('2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15').then(result => {
+        assert.equal(result, '-2_130.70000000000005/132');
+      });
+    });
   });
 });

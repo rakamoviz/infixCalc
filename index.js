@@ -103,6 +103,10 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
 
     postfixTokenSubscriber.next(previousToken);
 
+    if (conversionStack.length === 2) {
+      postfixTokenSubscriber.next(conversionStack.pop());
+    }
+
     const previousOperator = conversionStack.slice(-1)[0]; //peek
     if (
       previousOperator !== undefined &&
@@ -221,9 +225,18 @@ function formatMixedNumber(integerPart, dividend, divisor) {
     return integerPart.toString();
   }
 
-  let carryOverFromFraction = Math.floor(dividend / divisor);
+  let carryOverFromFraction = undefined;
+  if (
+    (dividend > 0 && divisor > 0) ||
+    (dividend < 0 && divisor < 0)
+  ) {
+    carryOverFromFraction = Math.floor(dividend / divisor);
+  } else {
+    carryOverFromFraction = Math.ceil(dividend / divisor);
+  }
+
   let returnedIntegerPart = integerPart + carryOverFromFraction;
-  let remainingDividend = dividend - (carryOverFromFraction * divisor);
+  let remainingDividend = Math.abs(dividend) - Math.abs(carryOverFromFraction * divisor);
 
   if (remainingDividend === 0) {
     return returnedIntegerPart.toString();
@@ -246,6 +259,11 @@ function formatMixedNumber(integerPart, dividend, divisor) {
 
 function calculate(infixExpression) {
   return createPostfixTokenStream(createInfixTokenStream(infixExpression)).pipe(
+    /*
+    RxOperators.tap(token => {
+      console.log("POSTFIXTOKEN::", token)
+    }),
+    */
     RxOperators.reduce((reducedPostfix, token) => {
       if (isNaN(token) && OPERATOR_PRECEDENCE[token] !== undefined) {//arithmetic operator
         const rightOperand = reducedPostfix.pop();
@@ -281,6 +299,7 @@ function calculate(infixExpression) {
       if (Array.isArray(temporaryResult) && temporaryResult.length === 2) {
         const dividend = temporaryResult[0];
         const divisor  = temporaryResult[1];
+
         return formatMixedNumber(0, dividend, divisor);
       } else if (typeof temporaryResult === 'string') {
         if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') === -1) {

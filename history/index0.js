@@ -21,8 +21,10 @@ function infixToPostfix(tokensInfix) {
   const tokensPostfix = [];
 
   tokensInfix.forEach(token => {
-    console.log('>>>>: ', token);
-    console.log({conversionStack, tokensPostfix});
+    if (token === '-') {
+      console.log('>>>>: ', token);
+      console.log({conversionStack, tokensPostfix});
+    }
 
     if (isNaN(token) === false) {
       const previousToken = conversionStack.slice(-1)[0];
@@ -45,6 +47,12 @@ function infixToPostfix(tokensInfix) {
 
       tokensPostfix.push(previousToken);
 
+      if (conversionStack.length === 2) {
+        if (token === '-') console.log("HA.03 ", {conversionStack, tokensPostfix})
+        tokensPostfix.push(conversionStack.pop());
+        if (token === '-') console.log("HA.03.b ", {conversionStack, tokensPostfix})
+      }
+
       const previousOperator = conversionStack.slice(-1)[0]; //peek
       if (
         previousOperator !== undefined &&
@@ -53,17 +61,24 @@ function infixToPostfix(tokensInfix) {
           operatorPrecedence[token] < operatorPrecedence[previousOperator]
         )
       ) {
+        if (token === '-') console.log("HA.01")
         tokensPostfix.push(conversionStack.pop());
+      } else {
+        if (token === '-') console.log("HA.02")
       }
 
       conversionStack.push(token);
     }
 
-    console.log({conversionStack, tokensPostfix});
-    console.log('<<<')
+    if (token === '-') {
+      console.log({conversionStack, tokensPostfix});
+      console.log('<<<')
+    }
   });
 
-  console.log("====> ", {conversionStack});
+  //if (token === '-') {
+    console.log("====> ", {conversionStack});
+  //}
 
   let remainingToken = conversionStack.pop();
   if (isNaN(remainingToken)) {
@@ -93,7 +108,14 @@ const operatorFns = {
   }
 }
 
-const tokensPostfix = infixToPostfix(['1', '+' , '2', '*', '3', '+', '4']);
+const infixExpression = '2 + 3 / 4 - 5';
+//const infixExpression = '2 + 3 / 4 - 5';
+
+const tokensInfix = infixExpression.split(' ')
+  .map(token => token.trim())
+  .filter(token => token !== '');
+
+const tokensPostfix = infixToPostfix(tokensInfix);
 
 console.log(tokensPostfix)
 
