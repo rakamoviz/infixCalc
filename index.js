@@ -244,13 +244,27 @@ function formatMixedNumber(integerPart, dividend, divisor) {
 
   if (divisor % remainingDividend === 0) {
     if (returnedIntegerPart === 0) {
-      return `1/${divisor / remainingDividend}`;
+      if (
+        (divisor < 0 && remainingDividend > 0) ||
+        (divisor > 0 && remainingDividend < 0)
+      ) {
+        return `-1/${Math.abs(divisor) / Math.abs(remainingDividend)}`;
+      } else {
+        return `1/${Math.abs(divisor) / Math.abs(remainingDividend)}`;
+      }
     } else {
       return `${returnedIntegerPart}_1/${divisor / remainingDividend}`;
     }
   } else {
     if (returnedIntegerPart === 0) {
-      return `${remainingDividend}/${divisor}`;
+      if (
+        (divisor < 0 && remainingDividend > 0) ||
+        (divisor > 0 && remainingDividend < 0)
+      ) {
+        return `-${Math.abs(remainingDividend)}/${Math.abs(divisor)}`;
+      } else {
+        return `${Math.abs(remainingDividend)}/${Math.abs(divisor)}`;
+      }
     } else {
       return `${returnedIntegerPart}_${remainingDividend}/${divisor}`;
     }

@@ -252,6 +252,36 @@ describe('Infix Calc', () => {
       });
     });
 
+    it('return -1_2/3 when input 1 - 8 / 3', () => {
+      return infixCalc.calculatePromise('1 - 8 / 3').then(result => {
+        assert.equal(result, '-1_2/3');
+      });
+    });
+
+    it('return -1_2/3 when input 1.0 - 8.0 / 3.0', () => {
+      return infixCalc.calculatePromise('1.0 - 8.0 / 3.0').then(result => {
+        assert.equal(result, '-1_2/3');
+      });
+    });
+
+    it('return -1_2/3 when input 1 - 2_2/3', () => {
+      return infixCalc.calculatePromise('1 - 2_2/3').then(result => {
+        assert.equal(result, '-1_2/3');
+      });
+    });
+
+    it('return -1_2/3 when input 1.0 - 2_2/3', () => {
+      return infixCalc.calculatePromise('1.0 - 2_2/3').then(result => {
+        assert.equal(result, '-1_2/3');
+      });
+    });
+
+    it('return -1_2/3 when input 1.0 - 2.0_2.0/3.0', () => {
+      return infixCalc.calculatePromise('1.0 - 2.0_2.0/3.0').then(result => {
+        assert.equal(result, '-1_2/3');
+      });
+    });
+
     //crazy long operation
     it('return -2_130.70000000000005/132 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15', () => {
       return infixCalc.calculatePromise('2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15').then(result => {
