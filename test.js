@@ -1,5 +1,5 @@
 const calculator = require('./index');
 
-calculator.calculatePromise('1/2 * 3_3/4').then(result => {
+calculator.calculatePromise('3_1/2').then(result => {
   console.log(result);
 }).catch(error => console.log("error ", error))

@@ -86,6 +86,8 @@ function createInfixTokenStream(infixExpression) {
  * [+, 2]
  * [1, +]
  * [+, +]
+ * [1_-2/3]
+ * [1_2/-3]
  */
 function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
   if (isNaN(token) === false || OPERATOR_PRECENDENCE[token] === undefined) { //number
@@ -207,6 +209,38 @@ function fractionalCalculation(operator, leftOperand, rightOperand) {
   }
 }
 
+function formatMixedNumber(integerPart, dividend, divisor) {
+  if (parseFloat(divisor) === 0) {
+    throw new Error("Arithmetic error, divisio by 0");
+  }
+
+  if (dividend === 0) {
+    return integerPart.toString();
+  }
+
+  let carryOverFromFraction = Math.floor(dividend / divisor);
+  let returnedIntegerPart = integerPart + carryOverFromFraction;
+  let remainingDividend = dividend - (carryOverFromFraction * divisor);
+
+  if (remainingDividend === 0) {
+    return returnedIntegerPart.toString();
+  }
+
+  if (divisor % remainingDividend === 0) {
+    if (returnedIntegerPart === 0) {
+      return `1/${divisor / remainingDividend}`;
+    } else {
+      return `${returnedIntegerPart}_1/${divisor / remainingDividend}`;
+    }
+  } else {
+    if (returnedIntegerPart === 0) {
+      return `${remainingDividend}/${divisor}`;
+    } else {
+      return `${returnedIntegerPart}_${remainingDividend}/${divisor}`;
+    }
+  }
+}
+
 function calculate(infixExpression) {
   return createPostfixTokenStream(createInfixTokenStream(infixExpression)).pipe(
     RxOperators.reduce((reducedPostfix, token) => {
@@ -239,19 +273,39 @@ function calculate(infixExpression) {
         throw new Error("Postfix syntax error");
       }
 
-      const dividend = reducedPostfix[0][0];
-      const divisor  = reducedPostfix[0][1];
+      let temporaryResult = reducedPostfix[0];
 
-      const integerPart = Math.floor(dividend / divisor);
-      const remainder = dividend % divisor;
-      if (remainder === 0) {
-        return integerPart.toString();
-      } else {
-        if (divisor % remainder === 0) {
-          return `${integerPart}_1/${divisor / remainder}`;
-        } else {
-          return `${integerPart}_${remainder}/${divisor}`;
+      if (Array.isArray(temporaryResult) && temporaryResult.length === 2) {
+        const dividend = temporaryResult[0];
+        const divisor  = temporaryResult[1];
+        return formatMixedNumber(0, dividend, divisor);
+      } else if (typeof temporaryResult === 'string') {
+        if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') === -1) {
+          return temporaryResult;
+        } else if (temporaryResult.indexOf('_') !== -1 && temporaryResult.indexOf('/') !== -1) {
+          const mixedTokens = temporaryResult.split('_');
+          const fractionalTokens = mixedTokens[1].split('/');
+          if (fractionalTokens.length !== 2) {
+            throw new Error("Arithmetic syntax error");
+          }
+
+          const divisor = parseFloat(fractionalTokens[1]);
+          const dividend = (
+            divisor * parseFloat(mixedTokens[0])
+          ) + parseFloat(fractionalTokens[0]);
+
+          return formatMixedNumber(0, dividend, divisor);
+        } else if (temporaryResult.indexOf('_') !== -1 && temporaryResult.indexOf('/') === -1) {
+          throw new Error("Arithmetic syntax error");
+        } else if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') !== -1) {
+          const fractionalTokens = temporaryResult.split('/');
+          const dividend = parseFloat(fractionalTokens[0]);
+          const divisor = parseFloat(fractionalTokens[1]);
+
+          return formatMixedNumber(0, dividend, divisor);
         }
+      } else {
+        throw new Error("Postfix syntax error");
       }
     })
   );
