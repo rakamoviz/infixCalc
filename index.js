@@ -218,7 +218,7 @@ function calculate(infixExpression) {
 
         const leftOperand = reducedPostfix.pop();
         if (leftOperand === undefined) {
-          throw new Error("Arithmetic evaluation errorx " + token);
+          throw new Error("Arithmetic evaluation error " + token);
         }
 
         const mixedLeftOperand = Array.isArray(leftOperand) ? leftOperand : toMixedNumber(leftOperand);
