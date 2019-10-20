@@ -93,15 +93,21 @@ describe('Infix Calc', () => {
       });
     });
 
-    it('return 1_2/2" when input is 2', () => {
+    it('return 1_2/2 when input is 2', () => {
       return infixCalc.calculatePromise('1/2').then(result => {
         assert.equal(result, '1/2');
       });
     });
 
-    it('return 1_4/2" when input is 3', () => {
+    it('return 1_4/2 when input is 3', () => {
       return infixCalc.calculatePromise('1/2').then(result => {
         assert.equal(result, '1/2');
+      });
+    });
+
+    it('return 7 when input is 1 + 2 * 3', () => {
+      return infixCalc.calculatePromise('1 + 2 * 3').then(result => {
+        assert.equal(result, '7');
       });
     });
   });
