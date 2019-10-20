@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "cli": "node cli.js",
+    "algo": "node history/algo.js"
   },
   "author": "",
   "license": "ISC",

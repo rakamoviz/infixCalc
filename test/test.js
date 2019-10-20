@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const {calculatePromise} = require('../index');
 
 describe('Infix Calc', async () => {
-  describe('calculate', (done) => {
+  describe('calculate', () => {
     it('should return 1_7/8 when input is 1/2 * 3_3/4', async () => {
       const result = await calculatePromise('1/2 * 3_3/4');
       expect(result).to.equal('1_7/8');
@@ -251,6 +251,70 @@ describe('Infix Calc', async () => {
         expect.fail('"Postfix syntax error" is not thrown');
       } catch (error) {
         expect(error.message).to.equal('Postfix syntax error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is +', async () => {
+      try {
+        const result = await calculatePromise('+');
+        expect.fail(result, null, '"Arithmetic evaluation error" is not thrown');
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is "1 2"', async () => {
+      try {
+        const result = await calculatePromise('1 2');
+        expect.fail(result, null, '"Arithmetic evaluation error" is not thrown');
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is "+ 2"', async () => {
+      try {
+        const result = await calculatePromise('+ 2');
+        expect.fail(result, null, '"Arithmetic evaluation error" is not thrown');
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is "1 +"', async () => {
+      try {
+        const result = await calculatePromise('1 +');
+        expect.fail(result, null, '"Arithmetic evaluation error" is not thrown');
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is "+ +"', async () => {
+      try {
+        const result = await calculatePromise('+ +');
+        expect.fail(result, null, '"Arithmetic evaluation error" is not thrown');
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is "1_-2/3"', async () => {
+      try {
+        const result = await calculatePromise('1_-2/3');
+        expect.fail('"Arithmetic evaluation error" not thrown');
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
+
+    it('Throws "Arithmetic evaluation error" when expression is "1_2/-3"', async () => {
+      try {
+        const result = await calculatePromise('1_2/-3');
+        expect.fail('"Arithmetic evaluation error" not thrown');
+        console.log
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
       }
     });
   });

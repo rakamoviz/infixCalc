@@ -78,7 +78,7 @@ function createInfixTokenStream(infixExpression) {
 }
 
 /**
- * Arithmetic syntax errors:
+ * Arithmetic evaluation errors:
  *
  * []
  * [+]
@@ -94,7 +94,7 @@ function buildPostfix(token, postfixTokenSubscriber, conversionStack) {
     const previousToken = conversionStack.slice(-1)[0];
 
     if (previousToken !== undefined && isNaN(previousToken) === false) {
-      postfixTokenSubscriber.error(new Error('Arithmetic syntax error'));
+      postfixTokenSubscriber.error(new Error('Arithmetic evaluation error'));
     }
 
     conversionStack.push(token);
@@ -218,7 +218,7 @@ function fractionalCalculation(operator, leftOperand, rightOperand) {
 
 function formatMixedNumber(integerPart, dividend, divisor) {
   if (parseFloat(divisor) === 0) {
-    throw new Error("Arithmetic error, divisio by 0");
+    throw new Error('Arithmetic evaluation error');
   }
 
   if (dividend === 0) {
@@ -282,12 +282,12 @@ function calculate(infixExpression) {
       if (isNaN(token) && OPERATOR_PRECEDENCE[token] !== undefined) {//arithmetic operator
         const rightOperand = reducedPostfix.pop();
         if (rightOperand === undefined) {
-          throw new Error("Arithmetic evaluation error " + token);
+          throw new Error("Arithmetic evaluation error");
         }
 
         const leftOperand = reducedPostfix.pop();
         if (leftOperand === undefined) {
-          throw new Error("Arithmetic evaluation error " + token);
+          throw new Error("Arithmetic evaluation error");
         }
 
         const mixedLeftOperand = Array.isArray(leftOperand) ? leftOperand : toMixedNumber(leftOperand);
@@ -322,17 +322,23 @@ function calculate(infixExpression) {
           const mixedTokens = temporaryResult.split('_');
           const fractionalTokens = mixedTokens[1].split('/');
           if (fractionalTokens.length !== 2) {
-            throw new Error("Arithmetic syntax error");
+            throw new Error("Arithmetic evaluation error");
           }
 
-          const divisor = parseFloat(fractionalTokens[1]);
-          const dividend = (
-            divisor * parseFloat(mixedTokens[0])
-          ) + parseFloat(fractionalTokens[0]);
+          const fractionalDivisor = parseFloat(fractionalTokens[1]);
+          const fractionalDividend = parseFloat(fractionalTokens[0]);
 
-          return formatMixedNumber(0, dividend, divisor);
+          if (fractionalDivisor < 0 || fractionalDividend < 0) {
+            throw new Error('Arithmetic evaluation error');
+          }
+
+          const dividend = (
+            fractionalDivisor * parseFloat(mixedTokens[0])
+          ) + fractionalDividend;
+
+          return formatMixedNumber(0, dividend, fractionalDivisor);
         } else if (temporaryResult.indexOf('_') !== -1 && temporaryResult.indexOf('/') === -1) {
-          throw new Error("Arithmetic syntax error");
+          throw new Error("Arithmetic evaluation error");
         } else if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') !== -1) {
           const fractionalTokens = temporaryResult.split('/');
           const dividend = parseFloat(fractionalTokens[0]);
