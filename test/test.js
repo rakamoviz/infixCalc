@@ -1,4 +1,3 @@
-const assert = require('assert');
 const expect = require('chai').expect;
 const {calculatePromise} = require('../index');
 
@@ -248,8 +247,8 @@ describe('Infix Calc', async () => {
 
     it('Throws "Postfix syntax error" when expression is empty', async () => {
       try {
-        const result = await calculatePromise('');
-
+        await calculatePromise('');
+        expect.fail('"Postfix syntax error" is not thrown');
       } catch (error) {
         expect(error.message).to.equal('Postfix syntax error');
       }
