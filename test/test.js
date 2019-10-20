@@ -119,6 +119,62 @@ describe('Infix Calc', () => {
       });
     });
 
+    //consecutive divisions
+    it('return 1/6 when input is 1 / 2 / 3', () => {
+      return infixCalc.calculatePromise('1 / 2 / 3').then(result => {
+        assert.equal(result, '1/6');
+      });
+    });
+
+    //consecutive divisions
+    it('return 1/3 when input is 2 / 2 / 3', () => {
+      return infixCalc.calculatePromise('2 / 2 / 3').then(result => {
+        assert.equal(result, '1/3');
+      });
+    });
+
+    //consecutive divisions
+    it('return 1/2 when input is 3 / 2 / 3', () => {
+      return infixCalc.calculatePromise('3 / 2 / 3').then(result => {
+        assert.equal(result, '1/2');
+      });
+    });
+
+    //consecutive divisions
+    it('return 1_1/3 when input is 8 / 2 / 3', () => {
+      return infixCalc.calculatePromise('8 / 2 / 3').then(result => {
+        assert.equal(result, '1_1/3');
+      });
+    });
+
+    //consecutive divisions
+    it('return 1/3 when input is 8 / 2 / 3 / 4', () => {
+      return infixCalc.calculatePromise('8 / 2 / 3 / 4').then(result => {
+        assert.equal(result, '1/3');
+      });
+    });
+
+    //two multiplications surrounding one division
+    it('return 7_1/2 when input is 2 * 3 / 4 * 5', () => {
+      return infixCalc.calculatePromise('2 * 3 / 4 * 5').then(result => {
+        assert.equal(result, '7_1/2');
+      });
+    });
+
+    //two divisions surrounding one multiplication
+    it('return 8/15 when input is 2 / 3 * 4 / 5', () => {
+      return infixCalc.calculatePromise('2 / 3 * 4 / 5').then(result => {
+        assert.equal(result, '8/15');
+      });
+    });
+
+    //two divisions surrounding one multiplication
+    it('return 1_1/15 when input is 4 / 3 * 4 / 5', () => {
+      return infixCalc.calculatePromise('4 / 3 * 4 / 5').then(result => {
+        assert.equal(result, '1_1/15');
+      });
+    });
+
     //two lower-precedences surround one higher
     it('return 11 when input is 1 + 2 * 3 + 4', () => {
       return infixCalc.calculatePromise('1 + 2 * 3 + 4').then(result => {
