@@ -60,16 +60,13 @@ Finally the **calculate** function that feeds on *postfixTokenStream* apply appr
 So far there are 52 test-cases, which covers invalid syntax situations, and different combination of operands and operators. Output:
 
 > npm run test
-
 > infixcalc@1.0.0 test /home/rcokorda/Projects/Sandbox/infixCalc
 > mocha
 
-
-
   Infix Calc
     calculate
-- should return 1_7/8 when input is 1/2 * 3_3/4
-- should return 3_1/2 when input is 2_3/8 + 9/8
+ - should return 1_7/8 when input is 1/2 * 3_3/4
+ - should return 3_1/2 when input is 2_3/8 + 9/8
 - should return the number when input is a simple number
 - should return the fraction when input is a fraction
 - should return the mixed number when input is a mixed number
