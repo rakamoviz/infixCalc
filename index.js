@@ -1,7 +1,7 @@
 const Rx = require('rxjs');
 const RxOperators = require('rxjs/operators');
 const {
-  toMixedNumber, fractionalCalculation, formatMixedNumber
+  toMixedNumber, fractionalCalculation, formatMixedNumber, normalizeStringNumber
 } = require('./helper')
 
 const OPERATOR_PRECEDENCE = {
@@ -190,38 +190,7 @@ function calculate(infixExpression) {
 
         return formatMixedNumber(dividend, divisor);
       } else if (typeof temporaryResult === 'string') {
-        if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') === -1) {
-          return temporaryResult;
-        } else if (temporaryResult.indexOf('_') !== -1 && temporaryResult.indexOf('/') !== -1) {
-          const mixedTokens = temporaryResult.split('_');
-          const fractionalTokens = mixedTokens[1].split('/');
-          if (fractionalTokens.length !== 2) {
-            throw new Error("Arithmetic evaluation error");
-          }
-
-          const fractionalDivisor = parseFloat(fractionalTokens[1]);
-          const fractionalDividend = parseFloat(fractionalTokens[0]);
-
-          if (fractionalDivisor < 0 || fractionalDividend < 0) {
-            throw new Error('Arithmetic evaluation error');
-          }
-
-          const integerPart = parseFloat(mixedTokens[0]);
-          const dividend = (
-            (fractionalDivisor * Math.abs(integerPart)) +
-            fractionalDividend
-          ) * (integerPart < 0 ? -1 : 1);
-
-          return formatMixedNumber(dividend, fractionalDivisor);
-        } else if (temporaryResult.indexOf('_') !== -1 && temporaryResult.indexOf('/') === -1) {
-          throw new Error("Arithmetic evaluation error");
-        } else if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') !== -1) {
-          const fractionalTokens = temporaryResult.split('/');
-          const dividend = parseFloat(fractionalTokens[0]);
-          const divisor = parseFloat(fractionalTokens[1]);
-
-          return formatMixedNumber(dividend, divisor);
-        }
+        return normalizeStringNumber(temporaryResult);
       } else {
         throw new Error("Postfix syntax error");
       }

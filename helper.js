@@ -136,6 +136,41 @@ function formatMixedNumber(dividend, divisor) {
   return `${minusSign}${integerPart}_${remainingDividend / gcdMixed}/${absDivisor / gcdMixed}`;
 }
 
+function normalizeStringNumber(stringNumber) {
+  if (stringNumber.indexOf('_') === -1 && stringNumber.indexOf('/') === -1) {
+    return stringNumber;
+  } else if (stringNumber.indexOf('_') !== -1 && stringNumber.indexOf('/') !== -1) {
+    const mixedTokens = stringNumber.split('_');
+    const fractionalTokens = mixedTokens[1].split('/');
+    if (fractionalTokens.length !== 2) {
+      throw new Error("Arithmetic evaluation error");
+    }
+
+    const fractionalDivisor = parseFloat(fractionalTokens[1]);
+    const fractionalDividend = parseFloat(fractionalTokens[0]);
+
+    if (fractionalDivisor < 0 || fractionalDividend < 0) {
+      throw new Error('Arithmetic evaluation error');
+    }
+
+    const integerPart = parseFloat(mixedTokens[0]);
+    const dividend = (
+      (fractionalDivisor * Math.abs(integerPart)) +
+      fractionalDividend
+    ) * (integerPart < 0 ? -1 : 1);
+
+    return formatMixedNumber(dividend, fractionalDivisor);
+  } else if (stringNumber.indexOf('_') !== -1 && stringNumber.indexOf('/') === -1) {
+    throw new Error("Arithmetic evaluation error");
+  } else if (stringNumber.indexOf('_') === -1 && stringNumber.indexOf('/') !== -1) {
+    const fractionalTokens = stringNumber.split('/');
+    const dividend = parseFloat(fractionalTokens[0]);
+    const divisor = parseFloat(fractionalTokens[1]);
+
+    return formatMixedNumber(dividend, divisor);
+  }
+}
+
 module.exports = {
-  toMixedNumber, plusMinus, fractionalCalculation, formatMixedNumber
+  toMixedNumber, plusMinus, fractionalCalculation, formatMixedNumber, normalizeStringNumber
 }
