@@ -68,57 +68,57 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
 
   Infix Calc
     calculate
-      ✓ should return 1_7/8 when input is 1/2 * 3_3/4
-      ✓ should return 3_1/2 when input is 2_3/8 + 9/8
-      ✓ should return the number when input is a simple number
-      ✓ should return the fraction when input is a fraction
-      ✓ should return the mixed number when input is a mixed number
-      ✓ return simple number when adding two simple numbers
-      ✓ return simple number when substracting two simple numbers
-      ✓ return simple number when multiplying two simple numbers
-      ✓ return 1/2 when input is 1/2
-      ✓ return 1/2 when input is 1 / 2
-      ✓ return 1/2 when input is 2/4
-      ✓ return 1/2 when input is 2 / 4
-      ✓ return 3 when input is 1_2/2
-      ✓ return 2_1/2 when input is 1_3/2
-      ✓ return 1_0/2 when input is 1
-      ✓ return 1_2/2 when input is 2
-      ✓ return 1_4/2 when input is 3
-      ✓ return 7 when input is 1 + 2 * 3
-      ✓ return 5 when input is 1 * 2 + 3
-      ✓ return 1/6 when input is 1 / 2 / 3
-      ✓ return 1/3 when input is 2 / 2 / 3
-      ✓ return 1/2 when input is 3 / 2 / 3
-      ✓ return 1_1/3 when input is 8 / 2 / 3
-      ✓ return 1/3 when input is 8 / 2 / 3 / 4
-      ✓ return 7_1/2 when input is 2 * 3 / 4 * 5
-      ✓ return 8/15 when input is 2 / 3 * 4 / 5
-      ✓ return 1_1/15 when input is 4 / 3 * 4 / 5
-      ✓ return 11 when input is 1 + 2 * 3 + 4
-      ✓ return 14 when input is 1 * 2 + 3 * 4
-      ✓ return 10 when input is 1 * 2 * 3 + 4
-      ✓ return 15 when input is 1 + 2 + 3 * 4
-      ✓ return 4 when input is 1 + 2 - 3 + 4
-      ✓ return -2_1/4 when input is 2 + 3 / 4 - 5
-      ✓ return 2.5 when input 2.5
-      ✓ return -2 when input -2
-      ✓ return -2.5 when input -2.5
-      ✓ return 1/2 when input 2.0 / 4.0
-      ✓ return -1/2 when input 2.0 / -4.0
-      ✓ return -1_2/3 when input 1 - 8 / 3
-      ✓ return -1_2/3 when input 1.0 - 8.0 / 3.0
-      ✓ return -1_2/3 when input 1 - 2_2/3
-      ✓ return -1_2/3 when input 1.0 - 2_2/3
-      ✓ return -1_2/3 when input 1.0 - 2.0_2.0/3.0
-      ✓ return -2_130.70000000000005/132 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15
-      ✓ Throws "Postfix syntax error" when expression is empty
-      ✓ Throws "Arithmetic evaluation error" when expression is +
-      ✓ Throws "Arithmetic evaluation error" when expression is "1 2"
-      ✓ Throws "Arithmetic evaluation error" when expression is "+ 2"
-      ✓ Throws "Arithmetic evaluation error" when expression is "1 +"
-      ✓ Throws "Arithmetic evaluation error" when expression is "+ +"
-      ✓ Throws "Arithmetic evaluation error" when expression is "1_-2/3"
-      ✓ Throws "Arithmetic evaluation error" when expression is "1_2/-3"
+      - should return 1_7/8 when input is 1/2 * 3_3/4
+      - should return 3_1/2 when input is 2_3/8 + 9/8
+      - should return the number when input is a simple number
+      - should return the fraction when input is a fraction
+      - should return the mixed number when input is a mixed number
+      - return simple number when adding two simple numbers
+      - return simple number when substracting two simple numbers
+      - return simple number when multiplying two simple numbers
+      - return 1/2 when input is 1/2
+      - return 1/2 when input is 1 / 2
+      - return 1/2 when input is 2/4
+      - return 1/2 when input is 2 / 4
+      - return 3 when input is 1_2/2
+      - return 2_1/2 when input is 1_3/2
+      - return 1_0/2 when input is 1
+      - return 1_2/2 when input is 2
+      - return 1_4/2 when input is 3
+      - return 7 when input is 1 + 2 * 3
+      - return 5 when input is 1 * 2 + 3
+      - return 1/6 when input is 1 / 2 / 3
+      - return 1/3 when input is 2 / 2 / 3
+      - return 1/2 when input is 3 / 2 / 3
+      - return 1_1/3 when input is 8 / 2 / 3
+      - return 1/3 when input is 8 / 2 / 3 / 4
+      - return 7_1/2 when input is 2 * 3 / 4 * 5
+      - return 8/15 when input is 2 / 3 * 4 / 5
+      - return 1_1/15 when input is 4 / 3 * 4 / 5
+      - return 11 when input is 1 + 2 * 3 + 4
+      - return 14 when input is 1 * 2 + 3 * 4
+      - return 10 when input is 1 * 2 * 3 + 4
+      - return 15 when input is 1 + 2 + 3 * 4
+      - return 4 when input is 1 + 2 - 3 + 4
+      - return -2_1/4 when input is 2 + 3 / 4 - 5
+      - return 2.5 when input 2.5
+      - return -2 when input -2
+      - return -2.5 when input -2.5
+      - return 1/2 when input 2.0 / 4.0
+      - return -1/2 when input 2.0 / -4.0
+      - return -1_2/3 when input 1 - 8 / 3
+      - return -1_2/3 when input 1.0 - 8.0 / 3.0
+      - return -1_2/3 when input 1 - 2_2/3
+      - return -1_2/3 when input 1.0 - 2_2/3
+      - return -1_2/3 when input 1.0 - 2.0_2.0/3.0
+      - return -2_130.70000000000005/132 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15
+      - Throws "Postfix syntax error" when expression is empty
+      - Throws "Arithmetic evaluation error" when expression is +
+      - Throws "Arithmetic evaluation error" when expression is "1 2"
+      - Throws "Arithmetic evaluation error" when expression is "+ 2"
+      - Throws "Arithmetic evaluation error" when expression is "1 +"
+      - Throws "Arithmetic evaluation error" when expression is "+ +"
+      - Throws "Arithmetic evaluation error" when expression is "1_-2/3"
+      - Throws "Arithmetic evaluation error" when expression is "1_2/-3"
 
   52 passing (27ms)
