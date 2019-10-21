@@ -160,3 +160,8 @@ So far there are 65 test-cases, which covers invalid syntax situations, and diff
 
 ## scratchpad_promise.js & scratchpad_rxjs.js
 These two files provide examples of how to use the module. There are two functions, **calculate** and **calculatePromise**. If it is preferred to use Promise or async/await, use *calculatePromise*. Otherwise, use *calculate*, which returns an *Observable* ([https://rxjs-dev.firebaseapp.com/guide/observable](https://rxjs-dev.firebaseapp.com/guide/observable)), which you can attach a subscriber to.
+
+## To-dos / improvements
+1. Improve test coverage. Currently still missing test cases for some functions in helper.js, namely: fractionalCalculation, greatestCommonDenominator, leastCommonMultiplication, and normalizeStringNumber. Some existing test files (e.g.: formatMixedNumber.js) is also missing a few test cases.
+
+2. Provide unit tests for parseOperand, processToken, createInfixTokenStream, buildPostfix, and createPostfixTokenStream. They are all functions defined currently in index.js. Currently the only function defined in index.js that has test cases is "calculate". This function "calculate" is the only one to be exported (for client's use) by this module. Therefore, to enable unit testings of the aforementioned functions, they need to be refactored out to its own file. Could be into existing helper.js, or a new file. Testing function that returns or manipulate Observable, such as createInfixTokenStream, takes special techniques (?), which can be learned from this article for instance: https://chrisnoring.gitbooks.io/rxjs-5-ultimate/content/testing.html
