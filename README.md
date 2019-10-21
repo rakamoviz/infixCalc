@@ -11,7 +11,7 @@ However, there is another file named **history/algo.js**. This file contains the
 
 Throughout development, I often returned to **algo.js** whenever I found a test-case failure (usually related to wrong postfix notation). Debug there, tweak there, and copy over the fix to index.js.
 
-The reason I didn't debug and fix directly in **index.js** is because the stream-ish & FP-ish version of the code (index.js) is slightly different from the straighforward algorithm spelled out in the **algo.js** (it went through a slight refactoring). It's not immediately obvious why the code has to be structured in such a way. So, debugging in **algo.js** often helps.
+The reason I didn't debug and fix directly in **index.js** is because the stream-ish & FP-ish version of the code (index.js) is slightly different from the straighforward algorithm spelled out in the **algo.js** (it went through a slight refactoring). Reasoning about / debugging chained functions (pipeline) can be challenging at times, so debugging in **algo.js** often helps (it shows a more straightforward picture of the algorithm).
 
 # Notes
 
@@ -129,7 +129,7 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
  - Answer: Use the following steps:
 1. The final outcome. We can use NodeJS CLI, and just type in the infix expression, and Node will give the correct result. It will give the result in decimal number though.
 2. Check to postfix notation that is produced by the code. I use this online tool to help my job: [https://www.mathblog.dk/tools/infix-postfix-converter/](https://www.mathblog.dk/tools/infix-postfix-converter/).
-3. We execute in our head the postfix notation obtained in step #2, running stack machine there, and this will give the mixed number. Make sure this result matches the result obtained in step #1 (it should).
+3. Execute the postfix notation obtained in step #2 on paper (running stack machine there), and this will give the mixed number. Make sure this result matches the result obtained in step #1 (it should).
 4. Use the mixed number obtained in step #3 in the expection in the test code.
 5. If the test fails, check if the postfix notation produced by the code matches with the one obtained in step #2.
 
