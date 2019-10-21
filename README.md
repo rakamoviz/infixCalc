@@ -57,7 +57,7 @@ Finally the **calculate** function that feeds on *postfixTokenStream* apply appr
 
 ## Test cases
 
-So far there are 64 test-cases, which covers invalid syntax situations, and different combination of operands and operators. Output:
+So far there are 65 test-cases, which covers invalid syntax situations, and different combination of operands and operators. Output:
 
 > npm run test
 
@@ -120,6 +120,7 @@ So far there are 64 test-cases, which covers invalid syntax situations, and diff
  - Throws "Arithmetic evaluation error" when expression is "+ +"
  - Throws "Arithmetic evaluation error" when expression is "1_-2/3"
  - Throws "Arithmetic evaluation error" when expression is "1_2/-3"
+ - Throws "Arithmetic evaluation error" when division by zero
 
   Test formatMixedNumber function
     formatMixedNumber
@@ -141,7 +142,7 @@ So far there are 64 test-cases, which covers invalid syntax situations, and diff
     toMixedNumber
  - should return [-5, 3] when input -1_2/3
 
-  64 passing (31ms)
+  65 passing (31ms)
 
 
  - Question: How do we come up with those test-cases?
