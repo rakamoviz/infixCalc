@@ -134,4 +134,4 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
 5. If the test fails, check if the postfix notation produced by the code matches with the one obtained in step #2.
 
 ## scratchpad_promise.js & scratchpad_rxjs.js
-These two files provide examples of how to use the module. There are two functions, **calculate** and **calculatePromise**. If it is preferred to use Promise or async/await, use *calculatePromise*. Otherwise, use *calculate*, which returns an *Observer*, which you can attach a subscriber to.
+These two files provide examples of how to use the module. There are two functions, **calculate** and **calculatePromise**. If it is preferred to use Promise or async/await, use *calculatePromise*. Otherwise, use *calculate*, which returns an *Observable*, which you can attach a subscriber to.
