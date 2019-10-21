@@ -37,7 +37,7 @@ Because I just think it's interesting to be able to process unlimited length of 
 
 When we process such a long expression, we don't want to run into out-of-memory problem; we should minimize buffering. That can be achieved using stream style of programming. The library I use is RxJS ([https://rxjs-dev.firebaseapp.com/](https://rxjs-dev.firebaseapp.com/)), which is member of umbrella project named ReactiveX ([http://reactivex.io/](http://reactivex.io/)).
 
-A consequence of minimal-buffering is we need to perform the calculation real-time, incrementally, on-the-go as additional token arrives. Like what we do here: https://github.com/rakamoviz/infixCalc/blob/26f92657dc4251f93576c21c88818e4a08550d15/test/calculate.js#L249.
+A consequence of minimal-buffering is we need to perform the calculation real-time, incrementally, on-the-go as additional token arrives. Like what we do here: https://github.com/rakamoviz/infixCalc/blob/e1ae09a60b281a5935207b3b94bfd1dfcaf08355/index.js#L169.
 
 As the name of the library implies **reactive**, it reacts to additional input immediately. Also, "reactive" is often associated with **responsive** (we can feed intermediate values to the subscriber). Plus **scalability** which is a by-product of minimal buffering.
 
