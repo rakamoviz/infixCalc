@@ -43,15 +43,15 @@ As the name of the library implies **reactive**, it reacts to additional input i
 
 In big picture, the index.js comprise of three streams:
 
- - infixTokenStream (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L54)
- - postfixTokenStream (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L125)
- - calculation stream (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L274)
+ - infixTokenStream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L57)
+ - postfixTokenStream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L128)
+ - calculation stream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L148)
 
 Subscriber subscribes to calculation stream, which is a higher-order-stream wrapping around a postfixTokenStream, which in turn is another higher-order-streaming wrapping around infixTokenStream.
 
 The **createInfixTokenStream** generates token out of expression string. However, instead of simply tokenizing the entire string (using String::split for example), it scans character-by-character, and emits token at appropriate points.
 
-The **buildPostfix** (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L92) used by **createPostfixTokenStream** decides whether to emit the token to resulting *postfixTokenStream* or keep it around in the stack, according to infix-to-postfix conversion algorithm.
+The **buildPostfix** (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L95) used by **createPostfixTokenStream** decides whether to emit the token to resulting *postfixTokenStream* or keep it around in the stack, according to infix-to-postfix conversion algorithm.
 
 Finally the **calculate** function that feeds on *postfixTokenStream* apply appropriate arithmetic operation (*fractionalCalculation*) whenever an operator is received from the stream.
 
