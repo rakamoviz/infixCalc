@@ -25,11 +25,11 @@ Calculating the result from a postfix notation is relatively simple; we just nee
 
 Basically we either:
 - In the case of non-streaming solution (**algo.js**): perform a *reduce* on the array of postfix tokens. We push the token to the stack if it's an operand (number). We pop two operands from the stack if the token is an operator, and push the intermediate result back to the stack. Code: https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/history/algo.js#L101. Actually this is a very simplified explanation; some other details (related to operator precedence requires a more involved algorithm, which can be found in **index.js**, the true solution).
-- In the case of streaming solution (**index.js**): we don't have array; we are fed with token one-by-one (and we don't buffer them).  Again, we perform *reduce* here: https://github.com/rakamoviz/infixCalc/blob/8c6121bd70cfcd77602e46f9199b50cac222a975/index.js#L155. In case of a "complete expression (e.g.: 1 + 2), the outcome of the reduce would be a tuple [dividend, divisor], which in this case would be [3, 1]. This tuple is formatted to mixed number by invoking **formatMixedNumber**. The other end of the stream (the subscriber) will receive the outcome of that function.
+- In the case of streaming solution (**index.js**): we don't have array; we are fed with token one-by-one (and we don't buffer them).  Again, we perform *reduce* here: https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L155. In case of a "complete expression (e.g.: 1 + 2), the outcome of the reduce would be a tuple [dividend, divisor], which in this case would be [3, 1]. This tuple is formatted to mixed number by invoking **formatMixedNumber**. The other end of the stream (the subscriber) will receive the outcome of that function.
 
-If the input expression has at least two operands, the outcome of the reduce operation will be a tuple [dividend, divisor]: https://github.com/rakamoviz/infixCalc/blob/a01bd976ea45da23e719f0dc737f306e8ca9d241/index.js#L187. Otherwise, the outcome would be a simple string -- the input expression itself -- which is processed here (for normalization): https://github.com/rakamoviz/infixCalc/blob/a01bd976ea45da23e719f0dc737f306e8ca9d241/index.js#L192.
+If the input expression has at least two operands, the outcome of the reduce operation will be a tuple [dividend, divisor]: https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L187. Otherwise, the outcome would be a simple string -- the input expression itself -- which is processed here (for normalization): https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L191.
 
-When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L169), we cannot simply use the built-in operator (/,+,-,*). Instead we use the **fractionalCalculation** function that takes into account fractional / mixed numbers, and performs accordingly. For example, '1 / 2 + 3 / 4' will result it '5/4' because we calculate the LCM (least common-multiplication) among the divisors, and adjust the dividends accordingly.
+When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L169), we cannot simply use the built-in operator (/,+,-,*). Instead we use the **fractionalCalculation** function that takes into account fractional / mixed numbers, and performs accordingly. For example, '1 / 2 + 3 / 4' will result it '5/4' because we calculate the LCM (least common-multiplication) among the divisors, and adjust the dividends accordingly.
 
 ## Motivation (why streaming?)
 
@@ -37,21 +37,21 @@ Because I just think it's interesting to be able to process unlimited length of 
 
 When we process such a long expression, we don't want to run into out-of-memory problem; we should minimize buffering. That can be achieved using stream style of programming. The library I use is RxJS ([https://rxjs-dev.firebaseapp.com/](https://rxjs-dev.firebaseapp.com/)), which is member of umbrella project named ReactiveX ([http://reactivex.io/](http://reactivex.io/)).
 
-A consequence of minimal-buffering is we need to perform the calculation real-time, incrementally, on-the-go as additional token arrives. Like what we do here: https://github.com/rakamoviz/infixCalc/blob/e1ae09a60b281a5935207b3b94bfd1dfcaf08355/index.js#L169.
+A consequence of minimal-buffering is we need to perform the calculation real-time, incrementally, on-the-go as additional token arrives. Like what we do here: https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L169.
 
 As the name of the library implies **reactive**, it reacts to additional input immediately. Also, "reactive" is often associated with **responsive** (we can feed intermediate values to the subscriber). Plus **scalability** which is a by-product of minimal buffering.
 
 In big picture, the index.js comprise of three streams:
 
- - infixTokenStream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L57)
- - postfixTokenStream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L128)
- - calculation stream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L148)
+ - infixTokenStream (https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L57)
+ - postfixTokenStream (https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L128)
+ - calculation stream (https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L148)
 
-Subscriber subscribes to calculation stream, which feeds on a postfixTokenStream, which in turn is another higher-order-streaming wrapping around infixTokenStream. The wrapping takes place here: https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L149
+Subscriber subscribes to calculation stream, which feeds on a postfixTokenStream, which in turn is another higher-order-streaming wrapping around infixTokenStream. The wrapping takes place here: https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L149
 
 The **createInfixTokenStream** generates token out of expression string. However, instead of simply tokenizing the entire string (using String::split for example), it scans character-by-character, and emits token at appropriate points.
 
-The **buildPostfix** (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L95) used by **createPostfixTokenStream** decides whether to emit the token to resulting *postfixTokenStream* or keep it around in the stack, according to infix-to-postfix conversion algorithm.
+The **buildPostfix** (https://github.com/rakamoviz/infixCalc/blob/7c3cb071ea563ede93c314b535b102af0329a2bb/index.js#L95) used by **createPostfixTokenStream** decides whether to emit the token to resulting *postfixTokenStream* or keep it around in the stack, according to infix-to-postfix conversion algorithm.
 
 Finally the **calculate** function that feeds on *postfixTokenStream* apply appropriate arithmetic operation (*fractionalCalculation*) whenever an operator is received from the stream.
 
