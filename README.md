@@ -5,7 +5,7 @@
  - Run CLI: npm run cli
  - Debug core algorithm: npm run algo
 
-The completed solution is in **index.js** (and **helper.js**). The functions in helper.js are carved out index.js, so that they can be imported from the test-codes (i.e.: test/formatMixedNumber.js, test/plusMinus.js, and test/toMixedNumber.js).
+The completed solution is in **index.js** (and **helper.js**). The functions in helper.js are carved out index.js, so that they don't have to be exposed by index.js (which will be used by the client-code), and yet the can be imported from the test-codes (i.e.: *test/formatMixedNumber.js*, *test/plusMinus.js*, and *test/toMixedNumber.js*).
 
 However, there is another file named **history/algo.js**. This file contains the core algorithm, that focuses  on infix to postfix conversion. For the sake of simplicity, some concerns are dropped in the **algo.js**; there is no tokenizing & parsing (we just use .split on the infix notation string), no support for mixed number, no fancy "reactive calculator" (more on that in the notes section), not concerned about memory usage (tokenized expression and the resulting postfix tokens are stored entirely in memory), etc.
 
