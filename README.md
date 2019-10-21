@@ -60,7 +60,9 @@ Finally the **calculate** function that feeds on *postfixTokenStream* apply appr
 So far there are 52 test-cases, which covers invalid syntax situations, and different combination of operands and operators. Output:
 
 > npm run test
+
 > infixcalc@1.0.0 test /home/rcokorda/Projects/Sandbox/infixCalc
+
 > mocha
 
   Infix Calc
