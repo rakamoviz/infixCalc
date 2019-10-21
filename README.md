@@ -29,7 +29,7 @@ Basically we either:
 
 If the input expression has at least two operands, the outcome of the reduce operation will a tuple [dividend, divisor]: https://github.com/rakamoviz/infixCalc/blob/a01bd976ea45da23e719f0dc737f306e8ca9d241/index.js#L187. Otherwise, the outcome would be a simple string -- the input expression itself -- which is processed here (for normalization): https://github.com/rakamoviz/infixCalc/blob/a01bd976ea45da23e719f0dc737f306e8ca9d241/index.js#L192.
 
-When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L295), we cannot simply use the built-in operator (/,+,-,*). Instead we use the **fractionalCalculation** function that takes into account fractional / mixed numbers, and performs accordingly. For example, '1 / 2 + 3 / 4' will result it '5/4' because we calculate the LCM (least common-multiplication) among the divisors, and adjust the dividends accordingly.
+When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L169), we cannot simply use the built-in operator (/,+,-,*). Instead we use the **fractionalCalculation** function that takes into account fractional / mixed numbers, and performs accordingly. For example, '1 / 2 + 3 / 4' will result it '5/4' because we calculate the LCM (least common-multiplication) among the divisors, and adjust the dividends accordingly.
 
 ## Motivation (why streaming?)
 
