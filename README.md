@@ -57,7 +57,7 @@ Finally the **calculate** function that feeds on *postfixTokenStream* apply appr
 
 ## Test cases
 
-So far there are 52 test-cases, which covers invalid syntax situations, and different combination of operands and operators. Output:
+So far there are 63 test-cases, which covers invalid syntax situations, and different combination of operands and operators. Output:
 
 > npm run test
 
@@ -65,7 +65,7 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
 
 > mocha
 
-  Infix Calc
+  Test calculate function
     calculate
  - should return 1_7/8 when input is 1/2 * 3_3/4
  - should return 3_1/2 when input is 2_3/8 + 9/8
@@ -103,6 +103,7 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
  - return 2.5 when input 2.5
  - return -2 when input -2
  - return -2.5 when input -2.5
+ - return -1_2/3 when input -1_2/3
  - return 1/2 when input 2.0 / 4.0
  - return -1/2 when input 2.0 / -4.0
  - return -1_2/3 when input 1 - 8 / 3
@@ -110,7 +111,7 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
  - return -1_2/3 when input 1 - 2_2/3
  - return -1_2/3 when input 1.0 - 2_2/3
  - return -1_2/3 when input 1.0 - 2.0_2.0/3.0
- - return -2_130.70000000000005/132 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15
+ - return -2_1307/1320 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15
  - Throws "Postfix syntax error" when expression is empty
  - Throws "Arithmetic evaluation error" when expression is +
  - Throws "Arithmetic evaluation error" when expression is "1 2"
@@ -120,7 +121,27 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
  - Throws "Arithmetic evaluation error" when expression is "1_-2/3"
  - Throws "Arithmetic evaluation error" when expression is "1_2/-3"
 
-  52 passing (27ms)
+  Test formatMixedNumber function
+    formatMixedNumber
+ - should return -1_2/3 when operand -1_2/3
+
+  Test plusMinus function
+    plusMinus
+ - should return 3 when {operator: +, leftValue: 1, rightValue: 2}
+ - should return -1 when {operator: +, leftValue: 1, rightValue: -2}
+ - should return 1 when {operator: +, leftValue: -1, rightValue: 2}
+ - should return -3 when {operator: +, leftValue: -1, rightValue: -2}
+ - should return -1 when {operator: -, leftValue: 1, rightValue: 2}
+ - should return 3 when {operator: -, leftValue: 1, rightValue: -2}
+ - should return -3 when {operator: -, leftValue: -1, rightValue: 2}
+ - should return 1 when {operator: -, leftValue: -1, rightValue: -2}
+
+  Test toMixedNumber function
+    toMixedNumber
+ - should return [-5, 3] when input -1_2/3
+
+  63 passing (31ms)
+
 
  - Question: How do we come up with those test-cases?
  - Answer: Combinatorial (e.g.: operand-lowprecedence-operand-highprecedence, operand-highprecedence-operand-lowprecedence, operand-lowprecedence-operand-lowprecedence, operand-highprecedence-operand-highprecedence, and so on), identify corner cases (e.g.: whitespace-padded input, invalid infix notation, etc), etc.
