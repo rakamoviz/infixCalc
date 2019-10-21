@@ -47,7 +47,7 @@ In big picture, the index.js comprise of three streams:
  - postfixTokenStream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L128)
  - calculation stream (https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L148)
 
-Subscriber subscribes to calculation stream, which is a higher-order-stream wrapping around a postfixTokenStream, which in turn is another higher-order-streaming wrapping around infixTokenStream.
+Subscriber subscribes to calculation stream, which feeds on a postfixTokenStream, which in turn is another higher-order-streaming wrapping around infixTokenStream. The wrapping takes place here: https://github.com/rakamoviz/infixCalc/blob/c60d8d80d4e7f5ab88cf351002c495d44f4c3b21/index.js#L149
 
 The **createInfixTokenStream** generates token out of expression string. However, instead of simply tokenizing the entire string (using String::split for example), it scans character-by-character, and emits token at appropriate points.
 
