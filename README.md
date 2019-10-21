@@ -15,7 +15,7 @@ The reason I didn't debug and fix directly in **index.js** is because the stream
 
 # Notes
 
-My first reaction when I read the problemd description was: AST, a binary tree basically..., and visit the nodes using inorder traversal to compute the final result.
+My first reaction when I read the problem description was: AST, a binary tree basically..., and visit the nodes using inorder traversal to compute the final result.
 
 But then, how do we build that AST that respects operator precedence, given an infix expression? Will it be a variation of balancing-tree algorithm, where a subtree is moved and rotated when a certain operator token is plunged into the tree? That sounds overly complicated for a solution.
 
