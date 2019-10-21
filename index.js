@@ -1,5 +1,8 @@
 const Rx = require('rxjs');
-const RxOperators = require('rxjs/operators')
+const RxOperators = require('rxjs/operators');
+const {
+  toMixedNumber, fractionalCalculation, formatMixedNumber
+} = require('./helper')
 
 const OPERATOR_PRECEDENCE = {
   '*': 1,
@@ -142,135 +145,6 @@ function createPostfixTokenStream(infixTokenStream) {
   });
 }
 
-function toMixedNumber(operand) {
-  if(isNaN(operand) === false) {
-    return [parseFloat(operand), 1]; //[dividend, divisor]
-  }
-
-  if (operand.indexOf('_') !== -1) {
-    const mixedTokens = operand.split('_');
-    const fractionalTokens = mixedTokens[1].split('/');
-
-    return [
-      (parseFloat(fractionalTokens[1]) * parseFloat(mixedTokens[0])) + parseFloat(fractionalTokens[0]),
-      parseFloat(fractionalTokens[1])
-    ];
-  } else {
-    const fractionalTokens = operand.split('/');
-    return [
-      parseFloat(fractionalTokens[0]),
-      parseFloat(fractionalTokens[1])
-    ];
-  }
-}
-
-function plusMinus(operator, leftValue, rightValue) {
-  if (operator === '+') {
-    return leftValue + rightValue;
-  } else {
-    return leftValue - rightValue;
-  }
-}
-
-function fractionalCalculation(operator, leftOperand, rightOperand) {
-  if (operator === '+' || operator === '-') {
-    if (leftOperand[1] === rightOperand[1]) {
-      return [
-        plusMinus(operator, leftOperand[0], rightOperand[0]),
-        leftOperand[1]
-      ]
-    } else {
-      const greaterDivisor = Math.max(leftOperand[1], rightOperand[1]);
-      const smallerDivisor = Math.max(leftOperand[1], rightOperand[1]);
-
-      if (greaterDivisor % smallerDivisor === 0) {
-        return [
-          plusMinus(operator, (
-            leftOperand[0] * (greaterDivisor / leftOperand[1])
-          ), (
-            rightOperand[0] * (greaterDivisor / rightOperand[1])
-          )),
-          greaterDivisor
-        ]
-      } else {
-        return [
-          plusMinus(operator, (
-            leftOperand[0] * rightOperand[1]
-          ), (
-            rightOperand[0] * leftOperand[1]
-          )),
-          leftOperand[1] * rightOperand[1]
-        ]
-      }
-    }
-  } else if (operator === '*') {
-    return [
-      leftOperand[0] * rightOperand[0],
-      leftOperand[1] * rightOperand[1]
-    ];
-  } else { //division
-    return [
-      leftOperand[0] * rightOperand[1],
-      leftOperand[1] * rightOperand[0]
-    ];
-  }
-}
-
-function formatMixedNumber(integerPart, dividend, divisor) {
-  if (parseFloat(divisor) === 0) {
-    throw new Error('Arithmetic evaluation error');
-  }
-
-  if (dividend === 0) {
-    return integerPart.toString();
-  }
-
-  let carryOverFromFraction = undefined;
-  if (
-    (dividend > 0 && divisor > 0) ||
-    (dividend < 0 && divisor < 0)
-  ) {
-    carryOverFromFraction = Math.floor(dividend / divisor);
-  } else {
-    carryOverFromFraction = Math.ceil(dividend / divisor);
-  }
-
-  let returnedIntegerPart = integerPart + carryOverFromFraction;
-  let remainingDividend = Math.abs(dividend) - Math.abs(carryOverFromFraction * divisor);
-
-  if (remainingDividend === 0) {
-    return returnedIntegerPart.toString();
-  }
-
-  if (divisor % remainingDividend === 0) {
-    if (returnedIntegerPart === 0) {
-      if (
-        (divisor < 0 && remainingDividend > 0) ||
-        (divisor > 0 && remainingDividend < 0)
-      ) {
-        return `-1/${Math.abs(divisor) / Math.abs(remainingDividend)}`;
-      } else {
-        return `1/${Math.abs(divisor) / Math.abs(remainingDividend)}`;
-      }
-    } else {
-      return `${returnedIntegerPart}_1/${divisor / remainingDividend}`;
-    }
-  } else {
-    if (returnedIntegerPart === 0) {
-      if (
-        (divisor < 0 && remainingDividend > 0) ||
-        (divisor > 0 && remainingDividend < 0)
-      ) {
-        return `-${Math.abs(remainingDividend)}/${Math.abs(divisor)}`;
-      } else {
-        return `${Math.abs(remainingDividend)}/${Math.abs(divisor)}`;
-      }
-    } else {
-      return `${returnedIntegerPart}_${remainingDividend}/${divisor}`;
-    }
-  }
-}
-
 function calculate(infixExpression) {
   return createPostfixTokenStream(createInfixTokenStream(infixExpression)).pipe(
     /*
@@ -314,7 +188,7 @@ function calculate(infixExpression) {
         const dividend = temporaryResult[0];
         const divisor  = temporaryResult[1];
 
-        return formatMixedNumber(0, dividend, divisor);
+        return formatMixedNumber(dividend, divisor);
       } else if (typeof temporaryResult === 'string') {
         if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') === -1) {
           return temporaryResult;
@@ -332,11 +206,13 @@ function calculate(infixExpression) {
             throw new Error('Arithmetic evaluation error');
           }
 
+          const integerPart = parseFloat(mixedTokens[0]);
           const dividend = (
-            fractionalDivisor * parseFloat(mixedTokens[0])
-          ) + fractionalDividend;
+            (fractionalDivisor * Math.abs(integerPart)) +
+            fractionalDividend
+          ) * (integerPart < 0 ? -1 : 1);
 
-          return formatMixedNumber(0, dividend, fractionalDivisor);
+          return formatMixedNumber(dividend, fractionalDivisor);
         } else if (temporaryResult.indexOf('_') !== -1 && temporaryResult.indexOf('/') === -1) {
           throw new Error("Arithmetic evaluation error");
         } else if (temporaryResult.indexOf('_') === -1 && temporaryResult.indexOf('/') !== -1) {
@@ -344,7 +220,7 @@ function calculate(infixExpression) {
           const dividend = parseFloat(fractionalTokens[0]);
           const divisor = parseFloat(fractionalTokens[1]);
 
-          return formatMixedNumber(0, dividend, divisor);
+          return formatMixedNumber(dividend, divisor);
         }
       } else {
         throw new Error("Postfix syntax error");

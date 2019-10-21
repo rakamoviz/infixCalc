@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const {calculatePromise} = require('../index');
 
-describe('Infix Calc', async () => {
+describe('Test calculate function', () => {
   describe('calculate', () => {
     it('should return 1_7/8 when input is 1/2 * 3_3/4', async () => {
       const result = await calculatePromise('1/2 * 3_3/4');
@@ -202,6 +202,12 @@ describe('Infix Calc', async () => {
       expect(result).to.equal('-2.5');
     });
 
+    //negative mixed number
+    it('return -1_2/3 when input -1_2/3', async () => {
+      const result = await calculatePromise('-1_2/3');
+      expect(result).to.equal('-1_2/3');
+    });
+
     //division of decimal numbers
     it('return 1/2 when input 2.0 / 4.0', async () => {
       const result = await calculatePromise('2.0 / 4.0');
@@ -240,9 +246,9 @@ describe('Infix Calc', async () => {
     });
 
     //crazy long operation
-    it('return -2_130.70000000000005/132 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15', async () => {
+    it('return -2_1307/1320 when input is 2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15', async () => {
       const result = await calculatePromise('2 / 3 + 5 * 5 / 6 - 7 / 8 * 9 + 10 / 11 / 12 * 13 - 14 / 15');
-      expect(result).to.equal('-2_130.70000000000005/132');
+      expect(result).to.equal('-2_1307/1320');
     });
 
     it('Throws "Postfix syntax error" when expression is empty', async () => {
