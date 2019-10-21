@@ -123,7 +123,7 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
   52 passing (27ms)
 
  - Question: How do we come up with those test-cases?
- - Answer: Combinatorial, corner cases, boundary values, etc.
+ - Answer: Combinatorial (e.g.: operand-lowprecedence-operand-highprecedence, operand-highprecedence-operand-lowprecedence, operand-lowprecedence-operand-lowprecedence, , operand-highprecedence-operand-highprecedence, and so on), identify corner cases (e.g.: whitespace-padded input, invalid infix notation, etc), etc.
 
  - Question: How do we know what to expect?
  - Answer: Use the following steps:
