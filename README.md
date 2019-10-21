@@ -146,7 +146,7 @@ So far there are 65 test-cases, which covers invalid syntax situations, and diff
 
 
  - Question: How do we come up with those test-cases?
- - Answer: Combinatorial (e.g.: operand-lowprecedence-operand-highprecedence, operand-highprecedence-operand-lowprecedence, operand-lowprecedence-operand-lowprecedence, operand-highprecedence-operand-highprecedence, and so on), identify corner cases (e.g.: whitespace-padded input, invalid infix notation, etc), etc.
+ - Answer: Combinatorial (e.g.: operand-lowprecedence-operand-highprecedence, operand-highprecedence-operand-lowprecedence, operand-lowprecedence-operand-lowprecedence, operand-highprecedence-operand-highprecedence, and so on), identify corner cases (e.g.: whitespace-padded input, invalid infix notation, etc), boundary values (e.g.: division by zero), etc.
 
  - Question: How do we know what to expect?
  - Answer: Use the following steps:
