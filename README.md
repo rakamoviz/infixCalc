@@ -33,7 +33,9 @@ When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/7c3
 
 ## Motivation (why streaming?)
 
-Because I just think it's interesting to be able to process unlimited length of expression. There is an example of kind-of-long expression in the **test.js** (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/test/test.js#L243)
+Because I just think it's interesting to be able to process unlimited length of expression. There is an example of kind-of-long expression in the **test.js** (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/test/test.js#L243).
+
+Or we might want to "listen" to expression received from external source in the form of character stream. And we want to process (tokenize, parse, compute) "reactively", on-the-go, incrementally, without having to wait until the entire message has arrived.
 
 When we process such a long expression, we don't want to run into out-of-memory problem; we should minimize buffering. That can be achieved using stream style of programming. The library I use is RxJS ([https://rxjs-dev.firebaseapp.com/](https://rxjs-dev.firebaseapp.com/)), which is member of umbrella project named ReactiveX ([http://reactivex.io/](http://reactivex.io/)).
 
