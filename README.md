@@ -29,7 +29,7 @@ Basically we either:
 
 The other block (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L319) serves for the cases where the input expression is a single number, which can be a mixed number, a fraction, or an integer.
 
-When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L295), we cannot simply use the built-in operator (/,+,-,*). Instead we use the **fractionalCalculation** function that takes into account fractional / mixed numbers, and performs accordingly. For example, '1 / 2 + 3 / 4' will result it '5/4' because we calculate the LCM (least common-multiplier) among the divisors, and adjust the dividends accordingly.
+When applying the operator here (https://github.com/rakamoviz/infixCalc/blob/d585a008c7d199bad1f781d89940284c0a27d3aa/index.js#L295), we cannot simply use the built-in operator (/,+,-,*). Instead we use the **fractionalCalculation** function that takes into account fractional / mixed numbers, and performs accordingly. For example, '1 / 2 + 3 / 4' will result it '5/4' because we calculate the LCM (least common-multiplication) among the divisors, and adjust the dividends accordingly.
 
 ## Motivation (why streaming?)
 
