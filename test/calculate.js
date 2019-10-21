@@ -323,5 +323,15 @@ describe('Test calculate function', () => {
         expect(error.message).to.equal('Arithmetic evaluation error');
       }
     });
+
+    it('Throws "Arithmetic evaluation error" when division by zero', async () => {
+      try {
+        const result = await calculatePromise('1 / 0');
+        expect.fail('"Arithmetic evaluation error" not thrown');
+        console.log
+      } catch (error) {
+        expect(error.message).to.equal('Arithmetic evaluation error');
+      }
+    });
   });
 });
