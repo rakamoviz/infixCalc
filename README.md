@@ -122,7 +122,11 @@ So far there are 52 test-cases, which covers invalid syntax situations, and diff
 
   52 passing (27ms)
 
-How do we come up with those test-cases? How do we know what to expect? It involves the following steps:
+Q: How do we come up with those test-cases?
+A: Combinatorial, corner cases, boundary values, etc.
+
+Q: How do we know what to expect?
+A: Use the following steps:
 1. The final outcome. We can use NodeJS CLI, and just type in the infix expression, and Node will give the correct result. It will give the result in decimal number though.
 2. Check to postfix notation that is produced by the code. I use this online tool to help my job: [https://www.mathblog.dk/tools/infix-postfix-converter/](https://www.mathblog.dk/tools/infix-postfix-converter/).
 3. We execute in our head the postfix notation obtained in step #2, running stack machine there, and this will give the mixed number. Make sure this result matches the result obtained in step #1 (it should).
