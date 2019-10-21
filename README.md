@@ -7,7 +7,7 @@
 
 The completed solution is in **index.js** (and **helper.js**). The functions in helper.js are carved out from index.js, so they don't have to be exposed by index.js (which will be used by the client-code), but still they can be imported from the test-codes (i.e.: *test/formatMixedNumber.js*, *test/plusMinus.js*, and *test/toMixedNumber.js*).
 
-However, there is another file named **history/algo.js**. This file contains the core algorithm, that focuses  on infix to postfix conversion. For the sake of simplicity, some concerns are dropped in the **algo.js**; there is no tokenizing & parsing (we just use .split on the infix notation string), no support for mixed number, no fancy "reactive calculator" (more on that in the notes section), not concerned about memory usage (tokenized expression and the resulting postfix tokens are stored entirely in memory), etc.
+However, there is another file named **history/algo.js**. This file contains the core algorithm, that focuses on the infix-to-postfix conversion. For the sake of simplicity, some concerns are dropped in the **algo.js**; there is no tokenizing & parsing (we just use .split on the infix notation string), no support for mixed number, no fancy "reactive calculator" (more on that in the notes section), not concerned about memory usage (tokenized expression and the resulting postfix tokens are stored entirely in memory), etc.
 
 Throughout development, I often returned to **algo.js** whenever I found a test-case failure (usually related to wrong postfix notation). Debug there, tweak there, and copy over the fix to index.js.
 
