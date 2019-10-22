@@ -7,5 +7,8 @@ stdin.addListener("data", data => {
     console.log(`= ${result}`);
 
     process.stdout.write("? ");
-  }).catch(error => console.log("! ", error));
+  }).catch(error => {
+    console.log("! ", error);
+    process.stdout.write("? ");
+  });
 });
