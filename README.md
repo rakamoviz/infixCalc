@@ -21,7 +21,7 @@ But then, how do we build that AST that respects operator precedence, given an i
 
 Then I figured that the correct notation that has operator-precedence built-in is the reverse-polish notation (postfix).
 
-How did I arrive to the algorithm (https://github.com/rakamoviz/infixCalc/blob/84eff222918c7d82455c3e23df8b4836d0ea8a8f/index.js#L95 or https://github.com/rakamoviz/infixCalc/blob/84eff222918c7d82455c3e23df8b4836d0ea8a8f/history/algo.js#L19) ? Deduction:
+How did I arrive to the infix-to-postfix algorithm (https://github.com/rakamoviz/infixCalc/blob/84eff222918c7d82455c3e23df8b4836d0ea8a8f/index.js#L95 or https://github.com/rakamoviz/infixCalc/blob/84eff222918c7d82455c3e23df8b4836d0ea8a8f/history/algo.js#L19) ? Deduction:
 
 1. I type the infix expression on this site [https://www.mathblog.dk/tools/infix-postfix-converter/](https://www.mathblog.dk/tools/infix-postfix-converter/) . It gives me the postfix equivalent.
 2. Play on paper, how to morph from A to B. By intuition I know it involves stack.
